@@ -1,26 +1,76 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #09090b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-outfit);
+  --font-astro: var(--font-star);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Solid white background */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+  color: #050505;
+  accent-color: #000;
+}
+
+/* Ensure content above noise */
+body>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 3px;
+}
+
+/* Minimalist border utility */
+.glass-panel {
+  background: transparent;
+  border: 1px solid #e5e5e5;
+  border-radius: 0;
+}
+
+/* Selection color */
+::selection {
+  background: #000;
+  color: white;
+}
+
+/* 
+   Safari/WebKit Hack:
+   Expand the native picker indicator to fill the entire input.
+   This ensures that clicking anywhere on the input triggers the native picker
+   instead of just focusing the text area.
+*/
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
 }
