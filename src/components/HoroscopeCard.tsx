@@ -14,12 +14,21 @@ import {
     Hash,
     CheckCircle2,
     XCircle,
+    Sparkles,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface HoroscopeCardProps {
     data: HoroscopeData;
+}
+
+function getScoreLabel(score: number): string {
+    if (score < 25) return "Challenging";
+    if (score < 45) return "Tense / Low support";
+    if (score < 60) return "Mixed";
+    if (score < 75) return "Supportive";
+    return "Strong tailwind";
 }
 
 const SCORE_ICONS: Record<string, React.ReactNode> = {
@@ -104,12 +113,28 @@ export function HoroscopeCard({ data }: HoroscopeCardProps) {
             <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-px bg-black/10 border border-black/10">
                 {/* Scores */}
                 <div className="bg-white p-10 space-y-8">
-                    <h3 className="text-xs uppercase tracking-widest text-black/60 mb-6">Daily Scores</h3>
+                    <div className="flex justify-between items-end mb-6">
+                        <h3 className="text-xs uppercase tracking-widest text-black/60">Energy Forecast</h3>
+                        {personal?.confidence_score && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                                className="flex items-center justify-center gap-2"
+                            >
+                                <span className="text-[11px] uppercase tracking-[0.3em] text-black/60 font-semibold">
+                                    Strength: {personal.confidence_score}%
+                                </span>
+                            </motion.div>
+                        )}
+                    </div>
                     <div className="space-y-6">
                         {scores.overall && (
                             <div className="space-y-2 pb-6 border-b border-black/5">
                                 <div className="flex items-center gap-4">
-                                    <span className="text-xs uppercase tracking-widest w-16 text-black/60">Overall</span>
+                                    <div className="flex items-center gap-3 w-16">
+                                        <span className="text-xs uppercase tracking-widest text-black/60">Overall</span>
+                                    </div>
                                     <div className="flex-1 h-px bg-black/10">
                                         <motion.div
                                             initial={{ width: 0 }}
@@ -118,7 +143,12 @@ export function HoroscopeCard({ data }: HoroscopeCardProps) {
                                             className="h-full bg-black"
                                         />
                                     </div>
-                                    <span className="text-xs font-mono text-black/60 w-8 text-right">{scores.overall}</span>
+                                    <div className="flex flex-col items-end">
+                                        <span className="text-xs font-mono text-black/60 w-8 text-right">{scores.overall}</span>
+                                        <span className="text-[10px] uppercase tracking-widest text-black/60 font-bold italic">
+                                            {getScoreLabel(scores.overall)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         )}
@@ -127,7 +157,9 @@ export function HoroscopeCard({ data }: HoroscopeCardProps) {
                             return (
                                 <div key={dim} className="space-y-2">
                                     <div className="flex items-center gap-4">
-                                        <span className="text-xs uppercase tracking-widest w-16 text-black/60">{dim}</span>
+                                        <div className="flex items-center gap-3 w-16">
+                                            <span className="text-xs uppercase tracking-widest text-black/60">{dim}</span>
+                                        </div>
                                         <div className="flex-1 h-px bg-black/10">
                                             <motion.div
                                                 initial={{ width: 0 }}
@@ -136,11 +168,16 @@ export function HoroscopeCard({ data }: HoroscopeCardProps) {
                                                 className="h-full bg-black"
                                             />
                                         </div>
-                                        <span className="text-xs font-mono text-black/60 w-8 text-right">{scores[dim]}</span>
+                                        <div className="flex flex-col items-end">
+                                            <span className="text-xs font-mono text-black/60 w-8 text-right">{scores[dim]}</span>
+                                            <span className="text-[10px] uppercase tracking-widest text-black/60 font-bold italic">
+                                                {getScoreLabel(scores[dim])}
+                                            </span>
+                                        </div>
                                     </div>
                                     {factor && (
-                                        <div className="pl-20 text-[10px] text-black/40 italic">
-                                            {factor.reason}
+                                        <div className="pl-16 text-[11px] text-black/60 font-medium leading-relaxed">
+                                            {typeof factor.reason === "string" ? factor.reason : factor.reason.main}
                                         </div>
                                     )}
                                 </div>

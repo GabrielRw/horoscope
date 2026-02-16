@@ -11,9 +11,25 @@ const HighlightSchema = z.object({
     label: z.string(),
 });
 
+const ScoreDriverSchema = z.object({
+    type: z.string(),
+    key: z.string(),
+    label: z.string(),
+    weight: z.number(),
+    intensity: z.string(),
+    orb_deg: z.number().optional(),
+});
+
 const ScoreFactorSchema = z.object({
     dimension: z.string(),
-    reason: z.string(),
+    reason: z.union([
+        z.string(),
+        z.object({
+            main: z.string(),
+            secondary: z.string().nullable().optional(),
+        })
+    ]),
+    drivers: z.array(ScoreDriverSchema).optional(),
 });
 
 export const HoroscopeScoresSchema = z.object({
@@ -24,10 +40,17 @@ export const HoroscopeScoresSchema = z.object({
     health: z.number(),
 });
 
+const LuckyTimeWindowSchema = z.object({
+    display: z.string(),
+    start: z.string(),
+    end: z.string(),
+    tz: z.string().optional(),
+});
+
 export const HoroscopeLuckySchema = z.object({
     color: KeyLabelSchema,
     number: z.number(),
-    time_window: z.string(),
+    time_window: z.union([z.string(), LuckyTimeWindowSchema]),
 });
 
 export const HoroscopeContentSchema = z.object({
