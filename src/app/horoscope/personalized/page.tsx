@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CalendarDays, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PersonalizedReading } from "@/components/PersonalizedReading";
+import { ShareBar } from "@/components/ShareBar";
 import { LoadingOverlay } from "@/components/Skeletons";
 import { ErrorState } from "@/components/ErrorState";
 import { fetchHoroscope, type BirthDetails } from "@/lib/astroapi";
@@ -112,7 +113,22 @@ function PersonalizedResultContent() {
                 <>
                     <PersonalizedReading data={data} />
 
-
+                    {/* Share Bar */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                        className="mt-16 pt-12 border-t border-black/[0.06] text-center"
+                    >
+                        <p className="text-[10px] uppercase tracking-widest text-black/30 mb-6">Share this reading</p>
+                        <div className="flex justify-center">
+                            <ShareBar
+                                sign={data.sign}
+                                date={targetDate}
+                                customUrl={typeof window !== "undefined" ? window.location.href : undefined}
+                            />
+                        </div>
+                    </motion.div>
                     {/* Return Link */}
                     <motion.div
                         initial={{ opacity: 0 }}

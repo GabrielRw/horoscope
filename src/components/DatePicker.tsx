@@ -9,7 +9,7 @@ interface DatePickerProps {
     className?: string; // Add className back if needed
 }
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function DatePicker({ value, onChange, className }: DatePickerProps) {
     // Local display state as DD/MM/YYYY
     const [displayValue, setDisplayValue] = React.useState(() => {
         if (!value) return "";
@@ -58,7 +58,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
     };
 
     return (
-        <div className="relative group w-full">
+        <div className={cn("relative group w-full", className)}>
             <input
                 type="text"
                 inputMode="numeric"

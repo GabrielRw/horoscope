@@ -41,6 +41,13 @@ const SCORE_ICONS: Record<string, React.ReactNode> = {
     health: <Activity className="w-4 h-4" />,
 };
 
+const DRIVER_TAGS: Record<string, string[]> = {
+    love: ['love', 'relationships', 'attraction', 'feelings', 'emotional-stability', 'partners', 'sensuality'],
+    career: ['career', 'work', 'strategic-growth', 'power-dynamics', 'ambition', 'success', 'recognition', 'structures', 'discipline'],
+    money: ['money', 'abundance', 'resources', 'shared-resources', 'investment', 'wealth', 'values'],
+    health: ['health', 'vitality', 'self-care', 'routines', 'energy', 'body', 'healing'],
+};
+
 function OrbModal({ isOpen, onClose, orb }: { isOpen: boolean; onClose: () => void; orb: number | null }) {
     if (orb === null) return null;
 
@@ -114,9 +121,10 @@ function OrbModal({ isOpen, onClose, orb }: { isOpen: boolean; onClose: () => vo
 
 function TransitCard({ transit, index, onOrbClick }: { transit: any; index: number; onOrbClick: (orb: number) => void }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const { transit_planet, natal_planet, aspect, explanation, score, tags, orb_deg } = transit;
+    const { transit_planet, natal_planet, aspect, explanation, score, orb_deg, is_applying } = transit;
     const mainText = typeof explanation === 'string' ? explanation : explanation.main;
     const supporting = typeof explanation === 'object' ? explanation.supporting : [];
+    const tags = typeof explanation === 'object' ? explanation.tags : [];
 
     return (
         <motion.div
@@ -131,22 +139,30 @@ function TransitCard({ transit, index, onOrbClick }: { transit: any; index: numb
 
             <div className="space-y-6">
                 <div className="flex items-center justify-between flex-wrap gap-3">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                         <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-black/50">
                             {transit_planet.label} <span className="text-black/30 px-1 italic low-caps">{aspect.label}</span> {natal_planet.label}
                         </span>
+
+                        <div className="h-3 w-px bg-black/10 mx-1" />
+
                         <button
                             onClick={() => onOrbClick(orb_deg)}
-                            className="text-[9px] uppercase tracking-widest text-black/20 font-medium hover:text-black transition-colors border-b border-black/5 hover:border-black/20"
+                            className="text-[9px] uppercase tracking-widest text-black/30 font-medium hover:text-black transition-colors border-b border-black/5 hover:border-black/20"
                         >
                             Orb: {Math.abs(orb_deg).toFixed(1)}°
                         </button>
-                        {score > 80 && (
-                            <span className="px-2 py-0.5 bg-black text-white text-[8px] font-bold uppercase tracking-widest rounded-none">
-                                Significant Shift
-                            </span>
-                        )}
+
+                        <span className={`text-[9px] uppercase tracking-widest font-bold ${is_applying ? "text-emerald-600/60" : "text-black/20"}`}>
+                            {is_applying ? "Applying" : "Separating"}
+                        </span>
                     </div>
+
+                    {score > 80 && (
+                        <span className="px-2 py-0.5 bg-black text-white text-[8px] font-bold uppercase tracking-widest rounded-none">
+                            Significant Shift
+                        </span>
+                    )}
                 </div>
 
                 <div className="space-y-6">
@@ -222,32 +238,6 @@ export function PersonalizedReading({ data }: PersonalizedReadingProps) {
                         <h1 className="text-7xl font-light text-black tracking-tighter uppercase mb-2">
                             {sign?.name}
                         </h1>
-                        <div className="flex items-center justify-center gap-4 text-black/20">
-                            <div className="h-px w-8 bg-current" />
-                            <p className="text-[10px] uppercase tracking-[0.5em] font-medium">
-                                Daily Alignment
-                            </p>
-                            <div className="h-px w-8 bg-current" />
-                        </div>
-                        {personal?.confidence_score && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="flex flex-col items-center justify-center gap-2 pt-6"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[11px] uppercase tracking-[0.3em] text-black/60 font-semibold">
-                                        Alignment Strength: {personal.confidence_score}%
-                                    </span>
-                                </div>
-                                <p className="text-[10px] text-black/30 max-w-sm mx-auto leading-relaxed whitespace-pre-line">
-                                    Alignment Strength shows how focused today’s influences are.{"\n"}
-                                    When high, everything centers around a clear theme.{"\n"}
-                                    When low, the energy feels mixed or contradictory.
-                                </p>
-                            </motion.div>
-                        )}
                     </div>
                 </div>
 
@@ -330,23 +320,14 @@ export function PersonalizedReading({ data }: PersonalizedReadingProps) {
                     <div className="space-y-8">
                         <div className="flex justify-between items-end">
                             <h3 className="text-[10px] uppercase tracking-[0.3em] text-black/40 font-bold">Energy Forecast</h3>
-                            {personal?.confidence_score && (
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.5 }}
-                                    className="flex items-center justify-center gap-2"
-                                >
-                                    <span className="text-[11px] uppercase tracking-[0.3em] text-black/40 font-medium">
-                                        Alignment Strength: {personal.confidence_score}%
-                                    </span>
-                                </motion.div>
-                            )}
                         </div>
                         <div className="space-y-10">
                             {(["overall", "love", "career", "money", "health"] as const).map((dim) => {
                                 const factor = data.score_factors.find(f => f.dimension === dim);
                                 const reason = factor ? (typeof factor.reason === 'string' ? factor.reason : factor.reason.main) : null;
+
+                                // Use API-provided drivers directly, but skip for 'overall' as requested
+                                const drivers = dim === 'overall' ? [] : (factor?.drivers || []);
 
                                 return (
                                     <div key={dim} className="space-y-3">
@@ -367,17 +348,21 @@ export function PersonalizedReading({ data }: PersonalizedReadingProps) {
                                                 className="h-full bg-black"
                                             />
                                         </div>
+
+                                        {/* Reason Text */}
                                         {reason && (
                                             <p className="text-[11px] text-black/60 leading-relaxed font-medium">
                                                 {reason}
                                             </p>
                                         )}
-                                        {factor?.drivers && factor.drivers.length > 0 && (
-                                            <div className="flex flex-wrap gap-1.5 pt-1">
-                                                {factor.drivers.slice(0, 2).map((driver) => (
-                                                    <span key={driver.key} className="text-[8px] uppercase tracking-tighter text-black/40 bg-black/[0.03] px-2 py-0.5 border border-black/[0.05] font-medium">
-                                                        {driver.label}
-                                                    </span>
+
+                                        {/* Drivers Display */}
+                                        {drivers.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 pt-1">
+                                                {drivers.slice(0, 2).map((driver, i) => (
+                                                    <div key={i} className="text-[9px] uppercase tracking-wider text-black/50 bg-black/[0.02] px-2 py-1 rounded-sm border border-black/5 font-medium">
+                                                        {driver.label || driver.key}
+                                                    </div>
                                                 ))}
                                             </div>
                                         )}

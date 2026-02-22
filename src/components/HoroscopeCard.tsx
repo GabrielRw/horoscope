@@ -115,18 +115,6 @@ export function HoroscopeCard({ data }: HoroscopeCardProps) {
                 <div className="bg-white p-10 space-y-8">
                     <div className="flex justify-between items-end mb-6">
                         <h3 className="text-xs uppercase tracking-widest text-black/60">Energy Forecast</h3>
-                        {personal?.confidence_score && (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="flex items-center justify-center gap-2"
-                            >
-                                <span className="text-[11px] uppercase tracking-[0.3em] text-black/60 font-semibold">
-                                    Strength: {personal.confidence_score}%
-                                </span>
-                            </motion.div>
-                        )}
                     </div>
                     <div className="space-y-6">
                         {scores.overall && (

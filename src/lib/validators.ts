@@ -14,14 +14,16 @@ const HighlightSchema = z.object({
 const ScoreDriverSchema = z.object({
     type: z.string(),
     key: z.string(),
-    label: z.string(),
-    weight: z.number(),
-    intensity: z.string(),
+    label: z.string().optional(),
+    weight: z.number().optional(),
+    intensity: z.string().optional(),
+    value: z.number().optional(),
     orb_deg: z.number().optional(),
 });
 
 const ScoreFactorSchema = z.object({
     dimension: z.string(),
+    type: z.string().optional(),
     reason: z.union([
         z.string(),
         z.object({
@@ -100,6 +102,11 @@ export const HoroscopeDataSchema = z.object({
     content: HoroscopeContentSchema,
     astro: HoroscopeAstroSchema,
     personal: PersonalSchema.optional(),
+    scores_meta: z.object({
+        overall_method: z.string(),
+        weights: z.record(z.string(), z.number()),
+        rounding: z.string(),
+    }).optional(),
 });
 
 export const HoroscopeMetaSchema = z.object({
@@ -108,14 +115,14 @@ export const HoroscopeMetaSchema = z.object({
     settings: z.object({
         tz_str: z.string().optional(),
         timezone: z.string().optional(),
-        locale: z.string(),
+        locale: z.string().optional(),
         date_resolved: z.string(),
-        orb_policy: z.string(),
+        orb_policy: z.string().optional(),
     }),
     cache: z.object({
         hit: z.boolean(),
         ttl_seconds: z.number(),
-    }),
+    }).optional(),
     engine: z.object({
         name: z.string(),
         version: z.string(),

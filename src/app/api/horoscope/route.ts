@@ -66,7 +66,8 @@ export async function GET(request: NextRequest) {
         if (!parsed.success) {
             console.error(
                 "[FreeAstroAPI] Schema validation failed:",
-                parsed.error.issues
+                parsed.error.issues,
+                "Raw data:", JSON.stringify(raw)
             );
             return NextResponse.json(
                 { error: "API schema has changed. Please check back later." },

@@ -7,13 +7,14 @@ import { useState } from "react";
 interface ShareBarProps {
     sign: string;
     date: string;
+    customUrl?: string;
 }
 
-export function ShareBar({ sign, date }: ShareBarProps) {
+export function ShareBar({ sign, date, customUrl }: ShareBarProps) {
     const [copied, setCopied] = useState(false);
 
     const url = typeof window !== "undefined"
-        ? `${window.location.origin}/horoscope/${sign}?date=${date}`
+        ? (customUrl || `${window.location.origin}/horoscope/${sign}?date=${date}`)
         : "";
 
     const shareText = `Check out today's ${sign.charAt(0).toUpperCase() + sign.slice(1)} horoscope ✨`;
