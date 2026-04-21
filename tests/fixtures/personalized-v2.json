@@ -1,0 +1,173 @@
+{
+  "meta": {
+    "request_id": "req_v2_fixture",
+    "generated_at": "2026-02-18T11:43:37.948405Z",
+    "settings": {
+      "date_resolved": "2026-02-18",
+      "version": "v2"
+    },
+    "engine": {
+      "name": "DailyHoroscopeEngine",
+      "version": "2.0.0"
+    }
+  },
+  "data": {
+    "sign": "taurus",
+    "date": "2026-02-18",
+    "scores": {
+      "overall": 76,
+      "love": 80,
+      "career": 80,
+      "money": 80,
+      "health": 65
+    },
+    "score_factors": [
+      {
+        "dimension": "overall",
+        "type": "aggregate",
+        "reason": {
+          "main": "Overall is the weighted average of Love, Career, Money, and Health.",
+          "secondary": null
+        },
+        "drivers": [
+          { "type": "score", "key": "love", "value": 80 },
+          { "type": "score", "key": "career", "value": 80 }
+        ]
+      },
+      {
+        "dimension": "love",
+        "type": "dimension",
+        "reason": {
+          "main": "Venus Trine Natal Jupiter favors easy affection and mutual reassurance.",
+          "secondary": "Venus Sextile Natal Uranus favors playful flirting and natural chemistry."
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "venus_trine_jupiter",
+            "label": "Venus Trine Natal Jupiter",
+            "weight": 0.57,
+            "intensity": "strong",
+            "orb_deg": 0.53
+          }
+        ]
+      },
+      {
+        "dimension": "career",
+        "type": "dimension",
+        "reason": {
+          "main": "Jupiter Trine Natal Pluto smooths confident visibility and natural leadership.",
+          "secondary": null
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "jupiter_trine_pluto",
+            "label": "Jupiter Trine Natal Pluto",
+            "weight": 0.51,
+            "intensity": "strong",
+            "orb_deg": 0.38
+          }
+        ]
+      },
+      {
+        "dimension": "money",
+        "type": "dimension",
+        "reason": {
+          "main": "Venus Trine Natal Jupiter supports smooth negotiations around shared resources.",
+          "secondary": null
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "venus_trine_jupiter",
+            "label": "Venus Trine Natal Jupiter",
+            "weight": 0.52,
+            "intensity": "strong",
+            "orb_deg": 0.53
+          }
+        ]
+      },
+      {
+        "dimension": "health",
+        "type": "dimension",
+        "reason": {
+          "main": "Saturn Sextile Natal Moon enables supportive routines that feel sustainable.",
+          "secondary": null
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "saturn_sextile_moon",
+            "label": "Saturn Sextile Natal Moon",
+            "weight": 1,
+            "intensity": "moderate",
+            "orb_deg": 1.16
+          }
+        ]
+      }
+    ],
+    "lucky": {
+      "color": { "key": "green", "label": "Green" },
+      "number": 95,
+      "time_window": {
+        "display": "11am - 2pm",
+        "start": "11:00",
+        "end": "14:00",
+        "tz": "UTC"
+      }
+    },
+    "content": {
+      "text": "When this influence is active, feelings and will align in a cooperative way. It is easier to express what you want without pushing, and to be noticed for something genuine.",
+      "theme": "Sensuality",
+      "keywords": ["Practicality", "Sensuality", "Stability", "Perspective", "Momentum"],
+      "do": ["Trust your intuition", "Take small steps"],
+      "dont": ["Overthink small details", "Rush into decisions"],
+      "supporting_insights": [
+        "Choose one meaningful action that reflects your priorities.",
+        "If you feel seen, say so directly."
+      ]
+    },
+    "astro": {
+      "moon_sign": { "key": "pisces", "label": "Pisces" },
+      "moon_phase": { "key": "new_moon", "label": "New Moon" },
+      "highlights": [
+        { "type": "moon_sign", "key": "pisces", "label": "Moon in Pisces" },
+        { "type": "moon_phase", "key": "new_moon", "label": "New Moon" }
+      ]
+    },
+    "personal": {
+      "transits_top": [
+        {
+          "transit_planet": { "key": "jupiter", "label": "Jupiter" },
+          "natal_planet": { "key": "pluto", "label": "Pluto" },
+          "aspect": { "key": "trine", "label": "Trine" },
+          "orb_deg": 0.38,
+          "score": 38.4,
+          "explanation": {
+            "main": "During this period, growth comes through deep, strategic change rather than quick fixes.",
+            "supporting": [
+              "Favorable momentum for debt cleanup and investment strategy.",
+              "Choose one high-impact change."
+            ],
+            "tags": ["empowerment", "strategic-growth"]
+          },
+          "is_applying": true,
+          "exact_at": null
+        }
+      ],
+      "focus_areas": ["Discipline & Boundaries", "Growth & Luck"],
+      "confidence_score": 93
+    },
+    "scores_meta": {
+      "overall_method": "weighted_mean",
+      "weights": {
+        "love": 0.25,
+        "career": 0.25,
+        "money": 0.25,
+        "health": 0.25
+      },
+      "rounding": "round_half_up"
+    }
+  }
+}

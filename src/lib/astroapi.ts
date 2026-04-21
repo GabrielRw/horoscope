@@ -1,4 +1,4 @@
-import type { HoroscopeData } from "./validators";
+import type { HoroscopeData, PersonalizedHoroscopeData } from "./validators";
 
 export interface BirthDetails {
     year: number;
@@ -8,18 +8,35 @@ export interface BirthDetails {
     minute: number;
     lat: number;
     lon: number;
-    tzone: number;
+    tzone: string;
     city: string;
 }
 
-export interface FetchHoroscopeParams {
-    sign?: string;
+interface SignFetchHoroscopeParams {
+    sign: string;
     date?: string;
-    birth?: BirthDetails;
+    birth?: never;
+    locale?: never;
 }
+
+interface PersonalizedFetchHoroscopeParams {
+    birth: BirthDetails;
+    date?: string;
+    sign?: never;
+    locale?: string;
+}
+
+export type FetchHoroscopeParams =
+    | SignFetchHoroscopeParams
+    | PersonalizedFetchHoroscopeParams;
 
 export interface HoroscopeResult {
     data: HoroscopeData;
+    error?: never;
+}
+
+export interface PersonalizedHoroscopeResult {
+    data: PersonalizedHoroscopeData;
     error?: never;
 }
 
@@ -29,34 +46,55 @@ export interface HoroscopeError {
     status?: number;
 }
 
-export type HoroscopeResponse = HoroscopeResult | HoroscopeError;
+export type SignHoroscopeResponse = HoroscopeResult | HoroscopeError;
+export type PersonalizedHoroscopeResponse =
+    | PersonalizedHoroscopeResult
+    | HoroscopeError;
 
-/**
- * Client-side fetch helper that calls our Next.js API route,
- * which proxies to FreeAstroAPI securely.
- */
+function resolveLocale(explicitLocale?: string): string {
+    if (explicitLocale) {
+        return explicitLocale;
+    }
+
+    if (typeof navigator !== "undefined" && navigator.language) {
+        return navigator.language;
+    }
+
+    return "en";
+}
+
+export async function fetchHoroscope(
+    params: PersonalizedFetchHoroscopeParams
+): Promise<PersonalizedHoroscopeResponse>;
+export async function fetchHoroscope(
+    params: SignFetchHoroscopeParams
+): Promise<SignHoroscopeResponse>;
 export async function fetchHoroscope(
     params: FetchHoroscopeParams
-): Promise<HoroscopeResponse> {
+): Promise<SignHoroscopeResponse | PersonalizedHoroscopeResponse> {
     try {
-        const isPersonalized = !!params.birth;
-        let url = `/api/horoscope`;
-        let body = undefined;
+        const isPersonalized = "birth" in params && !!params.birth;
+        let url = "/api/horoscope";
+        let body: string | undefined;
 
         if (isPersonalized && params.birth) {
-            const { year, month, day, hour, minute, lat, lon, city } = params.birth;
-            const birthDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const birthTime = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+            const { year, month, day, hour, minute, lat, lon, city, tzone } = params.birth;
+            const birthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            const birthTime = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 
             body = JSON.stringify({
                 birth: {
                     date: birthDate,
                     time: birthTime,
-                    location: { lat, lng: lon, city }
+                    location: { lat, lng: lon, city },
                 },
-                date: params.date || "today"
+                date: params.date || "today",
+                timezone: tzone || "UTC",
+                tz_str: tzone || "UTC",
+                locale: resolveLocale(params.locale),
+                include_interpretation_blocks: true,
             });
-        } else {
+        } else if ("sign" in params) {
             const searchParams = new URLSearchParams();
             if (params.sign) searchParams.set("sign", params.sign.toLowerCase());
             if (params.date) searchParams.set("date", params.date);
@@ -64,14 +102,13 @@ export async function fetchHoroscope(
         }
 
         const method = isPersonalized ? "POST" : "GET";
-        console.log("[fetchHoroscope] Request:", { isPersonalized, method, url, body });
 
         const res = await fetch(url, {
             method,
             headers: {
                 "Content-Type": "application/json",
             },
-            body: body
+            body,
         });
 
         const json = await res.json();

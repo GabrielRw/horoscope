@@ -1,0 +1,288 @@
+{
+  "meta": {
+    "request_id": "req_v3_fixture",
+    "generated_at": "2026-04-20T13:52:29.466119Z",
+    "settings": {
+      "date_resolved": "2026-04-20",
+      "version": "v3",
+      "include_interpretation_blocks": true
+    },
+    "engine": {
+      "name": "DailyHoroscopeEngine",
+      "version": "3.0.0"
+    }
+  },
+  "data": {
+    "sign": "leo",
+    "date": "2026-04-20",
+    "scores": {
+      "overall": 68,
+      "love": 73,
+      "career": 92,
+      "money": 54,
+      "health": 53
+    },
+    "score_factors": [
+      {
+        "dimension": "overall",
+        "type": "aggregate",
+        "reason": {
+          "main": "Overall is the weighted average of Love, Career, Money, and Health.",
+          "secondary": null
+        },
+        "drivers": [
+          { "type": "score", "key": "love", "value": 73 },
+          { "type": "score", "key": "career", "value": 92 }
+        ]
+      },
+      {
+        "dimension": "love",
+        "type": "dimension",
+        "reason": {
+          "main": "Your ruler Sun is in a supportive condition from the 10th house, shaping today's love direction.",
+          "secondary": "Saturn Conjunction Natal Moon intensifies a tender reset in emotional closeness."
+        },
+        "drivers": [
+          {
+            "type": "ruler_condition",
+            "key": "leo_primary_ruler_condition_sun",
+            "label": "Primary ruler Sun condition",
+            "weight": 0.6,
+            "intensity": "strong",
+            "orb_deg": 1,
+            "house": 10,
+            "condition_score": 0.55
+          }
+        ]
+      },
+      {
+        "dimension": "career",
+        "type": "dimension",
+        "reason": {
+          "main": "Saturn Trine Natal Mercury supports smooth collaboration and easy buy-in.",
+          "secondary": "Sun activating your 10th house prioritizes professional direction and practical output."
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "saturn_trine_mercury",
+            "label": "Saturn Trine Natal Mercury",
+            "weight": 0.52,
+            "intensity": "strong",
+            "orb_deg": 0.8
+          }
+        ]
+      },
+      {
+        "dimension": "money",
+        "type": "dimension",
+        "reason": {
+          "main": "Jupiter Opposition Natal Neptune stirs uncertainty around costs requiring clearer numbers.",
+          "secondary": "Your ruler Sun is in a supportive condition from the 10th house, shaping today's money direction."
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "jupiter_opposition_neptune",
+            "label": "Jupiter Opposition Natal Neptune",
+            "weight": 0.41,
+            "intensity": "strong",
+            "orb_deg": 0.95
+          }
+        ]
+      },
+      {
+        "dimension": "health",
+        "type": "dimension",
+        "reason": {
+          "main": "Saturn Conjunction Natal Moon fuses with intense focus on rebuilding stamina.",
+          "secondary": "Mars Trine Natal Mercury favors quick thinking and technical coordination."
+        },
+        "drivers": [
+          {
+            "type": "personal_transit",
+            "key": "saturn_conjunction_moon",
+            "label": "Saturn Conjunction Natal Moon",
+            "weight": 0.5,
+            "intensity": "moderate",
+            "orb_deg": 1.79
+          }
+        ]
+      }
+    ],
+    "lucky": {
+      "color": { "key": "purple", "label": "Purple" },
+      "number": 5,
+      "time_window": {
+        "display": "6am - 2pm",
+        "start": "06:00",
+        "end": "14:00",
+        "tz": "UTC"
+      }
+    },
+    "content": {
+      "theme": "Leadership",
+      "keywords": ["Confidence", "Leadership", "Creativity", "Focus", "Balance", "Realignment"]
+    },
+    "astro": {
+      "moon_sign": { "key": "gemini", "label": "Gemini" },
+      "moon_phase": { "key": "new_moon", "label": "New Moon" },
+      "highlights": [
+        { "type": "moon_sign", "key": "gemini", "label": "Moon in Gemini" },
+        { "type": "moon_phase", "key": "new_moon", "label": "New Moon" }
+      ]
+    },
+    "personal": {
+      "transits_top": [
+        {
+          "transit_planet": { "key": "mercury", "label": "Mercury" },
+          "natal_planet": { "key": "moon", "label": "Moon" },
+          "aspect": { "key": "conjunction", "label": "Conjunction" },
+          "label": "Mercury Conjunction Natal Moon",
+          "score": 75.3,
+          "explanation": {
+            "main": "When this influence is active, thoughts and feelings sit close together, making moods easier to name and explain.",
+            "supporting": [
+              "Put emotions into simple sentences; it reduces overwhelm and prevents mixed signals.",
+              "Prioritize rest and food rhythms."
+            ],
+            "tags": ["emotional-clarity", "communication"]
+          },
+          "exact_at": "2026-04-21T14:37:30Z"
+        },
+        {
+          "transit_planet": { "key": "mars", "label": "Mars" },
+          "natal_planet": { "key": "moon", "label": "Moon" },
+          "aspect": { "key": "conjunction", "label": "Conjunction" },
+          "label": "Mars Conjunction Natal Moon",
+          "score": 57.5,
+          "explanation": {
+            "main": "Energy runs hot through emotional life, pushing truth to the surface.",
+            "supporting": [
+              "Move your body before difficult conversations.",
+              "Give yourself more recovery time."
+            ],
+            "tags": ["intensity", "emotional-drive"]
+          },
+          "exact_at": "2026-04-22T08:24:50Z"
+        },
+        {
+          "transit_planet": { "key": "jupiter", "label": "Jupiter" },
+          "natal_planet": { "key": "descendant", "label": "Descendant" },
+          "aspect": { "key": "sextile", "label": "Sextile" },
+          "label": "Jupiter Sextile Natal Descendant",
+          "score": 57.4,
+          "exact_at": "2026-04-22T08:26:57Z"
+        }
+      ],
+      "focus_areas": ["Background Themes", "Relationships & Bonds", "Growth & Opportunity"],
+      "confidence_score": 93,
+      "day_context": {
+        "active_windows": [
+          {
+            "id": "transit.conjunction.venus.descendant@2026-04-07T15:04:13Z",
+            "label": "Venus Conjunction Natal Descendant",
+            "category": "fast",
+            "transit_planet": "venus",
+            "natal_point": "descendant",
+            "aspect_type": "conjunction",
+            "pass_type": "direct",
+            "start": "2026-04-07T15:04:13Z",
+            "end": "2026-04-20T17:02:20Z",
+            "exact_hits": ["2026-04-14T03:46:24Z"]
+          }
+        ],
+        "exact_hits": [
+          {
+            "timestamp": "2026-04-21T14:37:30Z",
+            "label": "Mercury Conjunction Natal Moon",
+            "category": "fast",
+            "aspect_type": "conjunction",
+            "transit_planet": "mercury",
+            "natal_point": "moon"
+          }
+        ],
+        "next_shift": {
+          "timestamp": "2026-04-20T14:58:35Z",
+          "label": "Mars Sextile Natal Saturn starts",
+          "type": "window_start"
+        },
+        "dominant_topics": [
+          {
+            "title": "Transit Stellium In Taurus",
+            "category": "chart_pattern",
+            "focus_type": "background_month_theme",
+            "score": 0.769,
+            "peak_datetime": "2026-04-22T12:00:00Z"
+          }
+        ],
+        "supportive_vs_challenging": {
+          "supportive": 9,
+          "challenging": 10
+        }
+      },
+      "active_windows": [
+        {
+          "id": "transit.conjunction.venus.descendant@2026-04-07T15:04:13Z",
+          "label": "Venus Conjunction Natal Descendant",
+          "category": "fast",
+          "transit_planet": "venus",
+          "natal_point": "descendant",
+          "aspect_type": "conjunction",
+          "pass_type": "direct",
+          "start": "2026-04-07T15:04:13Z",
+          "end": "2026-04-20T17:02:20Z",
+          "exact_hits": ["2026-04-14T03:46:24Z"]
+        }
+      ],
+      "exact_hits": [
+        {
+          "timestamp": "2026-04-21T14:37:30Z",
+          "label": "Mercury Conjunction Natal Moon",
+          "category": "fast",
+          "aspect_type": "conjunction",
+          "transit_planet": "mercury",
+          "natal_point": "moon"
+        }
+      ],
+      "next_shift": {
+        "timestamp": "2026-04-20T14:58:35Z",
+        "label": "Mars Sextile Natal Saturn starts",
+        "type": "window_start"
+      },
+      "dominant_topics": [
+        {
+          "title": "Transit Stellium In Taurus",
+          "category": "chart_pattern",
+          "focus_type": "background_month_theme",
+          "score": 0.769,
+          "peak_datetime": "2026-04-22T12:00:00Z"
+        }
+      ],
+      "supportive_vs_challenging": {
+        "supportive": 9,
+        "challenging": 10
+      },
+      "insights_meta": {
+        "source": "timeline_and_transit_insights",
+        "timeline_enabled": true,
+        "insights_enabled": true,
+        "interpretation_blocks_enabled": true,
+        "timeline_pass_count": 78,
+        "generated_fact_count": 58,
+        "range_start": "2026-04-01T00:00:00Z",
+        "range_end": "2026-04-30T23:59:59Z"
+      }
+    },
+    "scores_meta": {
+      "overall_method": "weighted_mean",
+      "weights": {
+        "love": 0.25,
+        "career": 0.25,
+        "money": 0.25,
+        "health": 0.25
+      },
+      "rounding": "round_half_up"
+    }
+  }
+}

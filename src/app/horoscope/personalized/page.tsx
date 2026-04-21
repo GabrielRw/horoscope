@@ -11,13 +11,13 @@ import { ShareBar } from "@/components/ShareBar";
 import { LoadingOverlay } from "@/components/Skeletons";
 import { ErrorState } from "@/components/ErrorState";
 import { fetchHoroscope, type BirthDetails } from "@/lib/astroapi";
-import type { HoroscopeData } from "@/lib/validators";
+import type { PersonalizedHoroscopeData } from "@/lib/validators";
 
 function PersonalizedResultContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    const [data, setData] = useState<HoroscopeData | null>(null);
+    const [data, setData] = useState<PersonalizedHoroscopeData | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -50,11 +50,12 @@ function PersonalizedResultContent() {
             minute: parseInt(min || "0"),
             lat: parseFloat(lat),
             lon: parseFloat(lon),
-            tzone: 0,
+            tzone: tzone || "UTC",
             city: city || "Unknown",
         };
 
-        const result = await fetchHoroscope({ birth, date: targetDate });
+        const locale = typeof navigator !== "undefined" ? navigator.language : "en";
+        const result = await fetchHoroscope({ birth, date: targetDate, locale });
 
         if ("error" in result && result.error) {
             setError(result.error);
@@ -63,7 +64,7 @@ function PersonalizedResultContent() {
         }
 
         setLoading(false);
-    }, [year, month, day, hour, min, lat, lon, city, targetDate]);
+    }, [year, month, day, hour, min, lat, lon, tzone, city, targetDate]);
 
     useEffect(() => {
         loadHoroscope();
@@ -111,7 +112,11 @@ function PersonalizedResultContent() {
 
             {data && !loading && !error && (
                 <>
-                    <PersonalizedReading data={data} />
+                    <PersonalizedReading
+                        data={data}
+                        timezone={tzone || "UTC"}
+                        locale={typeof navigator !== "undefined" ? navigator.language : "en"}
+                    />
 
                     {/* Share Bar */}
                     <motion.div
