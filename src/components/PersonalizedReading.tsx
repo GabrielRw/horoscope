@@ -334,7 +334,7 @@ export function PersonalizedReading({
                     <div className="h-px w-full bg-black/5" />
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-[1.15fr_0.95fr] gap-8">
+                <div className="space-y-8">
                     <div className="border border-black/8 p-8 md:p-10 space-y-8 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.0))]">
                         <div className="flex items-center justify-between gap-3">
                             <p className="text-[10px] uppercase tracking-[0.25em] text-black/35">
@@ -345,20 +345,25 @@ export function PersonalizedReading({
                             </p>
                         </div>
                         {exactHits.length > 0 ? (
-                            <div className="space-y-2">
+                            <div className="space-y-3">
                                 {exactHits.slice(0, 4).map((hit, index) => {
                                     const parts = splitDateTimeParts(hit.timestamp, timezone, locale);
 
-                                        return (
-                                            <div
-                                                key={`${hit.label}-${hit.timestamp}`}
-                                                className="grid grid-cols-[auto_1fr] gap-4 items-start border border-black/6 px-4 py-4"
-                                            >
+                                    return (
+                                        <div
+                                            key={`${hit.label}-${hit.timestamp}`}
+                                            className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 md:gap-6 items-start border border-black/6 px-5 md:px-6 py-5 bg-white/80"
+                                        >
+                                            <div className="flex items-center gap-3 md:block">
                                                 <div className="w-8 h-8 border border-black/8 rounded-full flex items-center justify-center text-[10px] font-medium text-black/45">
                                                     {index + 1}
                                                 </div>
-                                                <div className="min-w-0">
-                                                <p className="text-base text-black leading-tight">
+                                                <div className="text-[10px] uppercase tracking-[0.18em] text-black/28 md:hidden">
+                                                    Exact hit
+                                                </div>
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-lg md:text-[1.35rem] text-black leading-tight font-light">
                                                     {hit.label}
                                                 </p>
                                                 <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-black/40 uppercase tracking-[0.16em]">
@@ -371,12 +376,12 @@ export function PersonalizedReading({
                                                     )}
                                                 </div>
                                                 {getTimelineInterpretation(data, hit.label) && (
-                                                        <p className="mt-3 text-sm text-black/62 leading-relaxed max-w-xl">
-                                                            {getTimelineInterpretation(data, hit.label)}
-                                                        </p>
-                                                    )}
-                                                </div>
+                                                    <p className="mt-4 text-sm md:text-[15px] text-black/62 leading-8 max-w-3xl">
+                                                        {getTimelineInterpretation(data, hit.label)}
+                                                    </p>
+                                                )}
                                             </div>
+                                        </div>
                                         );
                                     })}
                                 </div>
@@ -387,89 +392,84 @@ export function PersonalizedReading({
                         )}
                     </div>
 
-                    <div className="space-y-8">
-                        <div className="border border-black/8 p-8 md:p-10 space-y-6">
-                            <div className="flex items-center gap-2 text-black/35">
-                                <TrendingUp className="w-4 h-4" />
-                                <span className="text-[10px] uppercase tracking-[0.25em]">
-                                    Windows in effect
-                                </span>
-                            </div>
-                            <p className="text-sm text-black/50 leading-relaxed">
-                                Transit windows currently shaping the background of the day. These can matter just as much as an exact hit because they describe the wider period in which an influence stays active.
-                            </p>
-                            {activeWindows.length > 0 ? (
-                                <div className="space-y-4">
-                                    {activeWindows.slice(0, 5).map((window) => (
-                                        <div key={window.id} className="border border-black/6 p-5 space-y-4 bg-white/80">
-                                            <div className="flex items-start justify-between gap-3">
-                                                <p className="text-base md:text-lg text-black leading-snug">{window.label}</p>
-                                                {window.category && (
-                                                    <span className="text-[9px] uppercase tracking-[0.2em] text-black/35 border border-black/8 px-2 py-1">
-                                                        {formatEnumLabel(window.category)}
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <p className="text-[11px] uppercase tracking-[0.16em] text-black/32">
-                                                {formatWindowRange(window.start, window.end, timezone, locale)}
+                    <div className="border border-black/8 p-8 md:p-10 space-y-6">
+                        <div className="flex items-center gap-2 text-black/35">
+                            <TrendingUp className="w-4 h-4" />
+                            <span className="text-[10px] uppercase tracking-[0.25em]">
+                                Windows in effect
+                            </span>
+                        </div>
+                        <p className="text-sm text-black/50 leading-relaxed max-w-3xl">
+                            Transit windows currently shaping the background of the day. These matter because they describe the wider period in which an influence stays active, not just its exact peak.
+                        </p>
+                        {activeWindows.length > 0 ? (
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                {activeWindows.slice(0, 6).map((window) => (
+                                    <div key={window.id} className="border border-black/6 p-5 md:p-6 space-y-4 bg-white/80 min-h-[220px]">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <p className="text-lg md:text-xl text-black leading-snug font-light max-w-[18rem]">
+                                                {window.label}
                                             </p>
-                                            {getMatchedTimelineInterpretation(data, window.label) && (
-                                                <p className="text-sm text-black/62 leading-relaxed">
-                                                    {getMatchedTimelineInterpretation(data, window.label)}
-                                                </p>
-                                            )}
-                                            {window.exact_hits && window.exact_hits.length > 0 && (
-                                                <div className="flex flex-wrap gap-2 pt-1">
-                                                    {window.exact_hits.map((value) => (
-                                                        <span
-                                                            key={value}
-                                                            className="text-[10px] text-black/42 border border-black/8 px-2.5 py-1"
-                                                        >
-                                                            {formatZonedDateTime(value, timezone, locale)}
-                                                        </span>
-                                                    ))}
-                                                </div>
+                                            {window.category && (
+                                                <span className="text-[9px] uppercase tracking-[0.2em] text-black/35 border border-black/8 px-2 py-1 whitespace-nowrap">
+                                                    {formatEnumLabel(window.category)}
+                                                </span>
                                             )}
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-sm text-black/50">
-                                    No active transit windows were returned.
-                                </p>
-                            )}
-                        </div>
+                                        <p className="text-[11px] uppercase tracking-[0.16em] text-black/32">
+                                            {formatWindowRange(window.start, window.end, timezone, locale)}
+                                        </p>
+                                        {getMatchedTimelineInterpretation(data, window.label) && (
+                                            <p className="text-sm text-black/62 leading-7">
+                                                {getMatchedTimelineInterpretation(data, window.label)}
+                                            </p>
+                                        )}
+                                        {window.exact_hits && window.exact_hits.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 pt-1">
+                                                {window.exact_hits.map((value) => (
+                                                    <span
+                                                        key={value}
+                                                        className="text-[10px] text-black/42 border border-black/8 px-2.5 py-1"
+                                                    >
+                                                        {formatZonedDateTime(value, timezone, locale)}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-black/50">
+                                No active transit windows were returned.
+                            </p>
+                        )}
+                    </div>
 
-                        <div className="border border-black/8 p-8 md:p-10 space-y-6 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.0))]">
-                            <div className="flex items-center justify-between gap-4 flex-wrap">
-                                <div className="flex items-center gap-2 text-black/35">
-                                    <Clock className="w-4 h-4" />
-                                    <span className="text-[10px] uppercase tracking-[0.25em]">
-                                        Next exact peak
-                                    </span>
-                                </div>
-                                {exactHits.length > 0 && (
-                                    <span className="text-[10px] uppercase tracking-[0.22em] text-black/35 border border-black/8 px-3 py-1">
-                                        {exactHits.length} exact hits incoming
-                                    </span>
-                                )}
+                    <div className="border border-black/8 p-8 md:p-10 bg-[linear-gradient(180deg,rgba(0,0,0,0.015),rgba(0,0,0,0.0))]">
+                        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr_auto] gap-6 lg:gap-8 items-start">
+                            <div className="flex items-center gap-2 text-black/35">
+                                <Clock className="w-4 h-4" />
+                                <span className="text-[10px] uppercase tracking-[0.25em]">
+                                    Next exact peak
+                                </span>
                             </div>
                             {nextShift ? (
-                                <div className="grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] gap-6 items-start">
+                                <>
                                     <div className="space-y-3">
-                                        <p className="text-2xl md:text-[2.1rem] font-light serif text-black leading-tight max-w-xl">
+                                        <p className="text-2xl md:text-[2rem] font-light serif text-black leading-tight max-w-2xl">
                                             {nextShift.label}
                                         </p>
                                         {getTimelineInterpretation(data, nextShift.label) && (
-                                            <p className="text-base text-black/70 leading-relaxed max-w-xl">
+                                            <p className="text-base text-black/68 leading-7 max-w-2xl">
                                                 {getTimelineInterpretation(data, nextShift.label)}
                                             </p>
                                         )}
-                                        <p className="text-sm text-black/55 max-w-xl leading-relaxed">
-                                            This marks the next moment when one active influence reaches peak precision. Treat it as a timing cue, not automatically the strongest influence in the whole reading.
+                                        <p className="text-sm text-black/55 max-w-2xl leading-relaxed">
+                                            This is the next moment when one active influence reaches peak precision. Treat it as a timing cue within the broader transit windows, not automatically the strongest influence in the whole reading.
                                         </p>
                                     </div>
-                                    <div className="border border-black/8 p-5 bg-white/80 space-y-2">
+                                    <div className="border border-black/8 p-5 bg-white/80 space-y-2 min-w-[220px]">
                                         <p className="text-[9px] uppercase tracking-[0.22em] text-black/35">
                                             Scheduled for
                                         </p>
@@ -482,9 +482,9 @@ export function PersonalizedReading({
                                             </p>
                                         )}
                                     </div>
-                                </div>
+                                </>
                             ) : (
-                                <p className="text-sm text-black/50">
+                                <p className="text-sm text-black/50 lg:col-span-2">
                                     No upcoming shift marker was returned for this reading.
                                 </p>
                             )}
